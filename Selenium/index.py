@@ -38,36 +38,36 @@ class Browser:
 
         return browser
 
-class PJE:
-    CLASS_ELEMENTS = 'col-sm-12'
-
-    def __init__(self, options = '') -> None:
-        super().__init__(options)
-        link = 'https://pje-consulta-publica.tjmg.jus.br/'
-
-        self.browser.get(link)
-        pass
-
-    def exec(self):
-        browser.get(self.link)
-
-        browser.find_element(By.NAME, 
-            'fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso').send_keys('5147698-10.2023.8.13.0024')
-
-
-        browser.find_element(By.NAME, 'fPP:searchProcessos').click()
-
-        sleep(TIME_TO_WAIT)
-
-        browser.find_element(By.CSS_SELECTOR,'#fPP\\:processosTable\\:632256959\\:j_id245 > a').click()
-
-
 class Tribunal:
-    def __init__(self, nome) -> None:
-        
+    TIME_TO_WAIT = 10
+    def __init__(self, option = '') -> None:
+        self.browser = Browser(option)
 
         tipo = self.__apurar()
         pass
+
+
+class PJE(Tribunal):
+    CLASS_ELEMENTS = 'col-sm-12'
+
+    def __init__(self, options = '') -> None:
+        super().__init__('')
+        self.browser.get('https://pje-consulta-publica.tjmg.jus.br/')
+        pass
+
+    def exec(self, num):
+        self.browser.get(self.link)
+
+        self.browser.find_element(By.NAME, 
+            'fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso').send_keys(num)
+
+
+        self.browser.find_element(By.NAME, 'fPP:searchProcessos').click()
+
+        sleep(self.TIME_TO_WAIT)
+
+        self.browser.find_element(By.CSS_SELECTOR,'#fPP\\:processosTable\\:632256959\\:j_id245 > a').click()
+
 
 class Juiz:
     def __init__(self) -> None:
