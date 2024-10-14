@@ -1,6 +1,7 @@
 from pathlib import Path
 from time import sleep
 
+from abc import abstractmethod
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -40,26 +41,33 @@ class Browser:
 
 class Tribunal:
     TIME_TO_WAIT = 10
-    def __init__(self, option = '') -> None:
+    def __init__(self, link, option = '') -> None:
         self.browser = Browser(option)
-
-        tipo = self.__apurar()
+        self.browser.get(link)
         pass
 
+    @abstractmethod
+    def exec(num_processo):
+        raise NotImplementedError("Implemente a classe")
+
+class EPROC(Tribunal):
+    def __init__(self) -> None:
+        super().__init__('https://eproc1g.trf6.jus.br/eproc/externo_controlador.php?acao=processo_consulta_publica')
+        pass
+    
+    def exec(self):
+        ...
 
 class PJE(Tribunal):
     CLASS_ELEMENTS = 'col-sm-12'
 
-    def __init__(self, options = '') -> None:
-        super().__init__('')
-        self.browser.get('https://pje-consulta-publica.tjmg.jus.br/')
+    def __init__(self) -> None:
+        super().__init__('https://pje-consulta-publica.tjmg.jus.br/')
         pass
 
-    def exec(self, num):
-        self.browser.get(self.link)
-
+    def exec(self, num_processo):
         self.browser.find_element(By.NAME, 
-            'fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso').send_keys(num)
+            'fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso').send_keys(num_processo)
 
 
         self.browser.find_element(By.NAME, 'fPP:searchProcessos').click()
@@ -67,7 +75,6 @@ class PJE(Tribunal):
         sleep(self.TIME_TO_WAIT)
 
         self.browser.find_element(By.CSS_SELECTOR,'#fPP\\:processosTable\\:632256959\\:j_id245 > a').click()
-
 
 class Juiz:
     def __init__(self) -> None:
@@ -88,12 +95,8 @@ class Juiz:
         raise Exception('Processo de tribunal não identificado')
     
     def pesquisar(self):
-        for num, tribunal in self.processos.items:
-            infos = tribunal.infos()
-            browser = Browser(infos['options'])
-
-            browser.get(infos['link'])
-            
+        for num, tribunal in self.processos.items():
+            tribunal.exec(num)            
 
 if __name__ == '__main__':
     ...  
