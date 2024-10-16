@@ -1,6 +1,6 @@
 from pathlib import Path
 from time import sleep
-
+import keyboard
 from abc import abstractmethod
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -44,35 +44,48 @@ class EPROC(Browser):
     INPUT = 'txtNumProcesso'
     CAPTCHA = 'txtInfraCaptcha'
     CONTULTAR = 'sbmNovo'
-    TIME_TO_WAIT = 3
+    TABLE_CONTENT = '#divInfraAreaProcesso > table > tbody'
+    TIME_TO_WAIT = 1
     WAIT_CAPTCHA = 2
 
     def __init__(self) -> None:
         super().__init__()
-        self.browser.get(self.LINK_BASE)
         pass
 
     def exec(self, num_processo):
+        self.browser.get(self.LINK_BASE)
         self.browser.find_element(By.ID, self.INPUT).send_keys(num_processo)
 
-        self.tentar_consulta(self)
+        self.tentar_consulta()
+        return self.__valor_janela()
+       
+    def __valor_janela(self):
+        tbody = self.browser.find_element(By.CSS_SELECTOR, self.TABLE_CONTENT)
+        rows = tbody.find_elements(By.TAG_NAME, 'tr')
+        rows.pop(0)
+        return rows
+
 
     def tentar_consulta(self):
         self.browser.find_element(By.ID, self.CONTULTAR).click()
+        keyboard.press_and_release('enter')
         sleep(self.TIME_TO_WAIT)
-        #se o captcha aparece, esperar para preenchê-lo
-        if self.browser.find_element(By.ID, self.CAPTCHA).is_displayed():
-            return self.preencher_captcha()
+        try:
+            #se o captcha aparece, esperar para preenchê-lo
+            if self.browser.find_element(By.ID, self.CAPTCHA).is_displayed():
+                return self.preencher_captcha()
+        except:
+            return None
 
     def preencher_captcha(self):
-        while self.browser.find_element(By.ID, self.CAPTCHA).text != 4:
+        while len(self.browser.find_element(By.ID, self.CAPTCHA).get_attribute('value')) != 4:
             sleep(self.WAIT_CAPTCHA)
 
-        self.tentar_consulta(self)
+        self.tentar_consulta()
 
 class PJE(Browser):
     CLASS_ELEMENTS = 'col-sm-12'
-    TIME_TO_WAIT = 3
+    TIME_TO_WAIT = 1
     INPUT = 'fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso'
     BTN_PESQUISAR = 'fPP:searchProcessos'
     JANELA_PROCESSO = '#fPP\\:processosTable\\:632256959\\:j_id245 > a'
@@ -112,3 +125,4 @@ class PJE(Browser):
 
 if __name__ == '__main__':
     PJE().exec('5147698-10.2023.8.13.0024')
+    # EPROC().exec('10804583320214013800')
