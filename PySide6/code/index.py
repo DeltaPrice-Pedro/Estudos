@@ -20,7 +20,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lambda: self.loading())
 
     def loading(self):
-        self._loader = Loader()
+        self._loader = Worker()
         self._thread2 = QThread()
         loader = self._loader
         thread2 = self._thread2
@@ -82,26 +82,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton.setDisabled(False)
         self.progressBar.setValue(value)
 
-class Loader(QObject):
-    inicio = Signal(bool)
-    fim = Signal(bool)
-
-    def main(self):
-        self.run()
-        self.run2()
-        self.run3()
-
-    def run(self):
-        self.inicio.emit(True)
-    def run2(self):
-        time.sleep(5)
-    def run3(self):
-        self.fim.emit(False)
-
 class Worker(QObject):
     started = Signal(int)
     processed = Signal(int)
     finished = Signal(int)
+    inicio = Signal(bool)
+    fim = Signal(bool)
+
+    def main(self):
+        self.inicio.emit(True)
+        time.sleep(5)
+        self.fim.emit(False)
 
     def run(self):
         self.started.emit(0)
