@@ -63,10 +63,14 @@ class janelaCaptcha(QWidget):
         self.text_input = QLabel('Favor insira a sequência a seguir')
         self.input = QLineEdit()
         self.input.setMaxLength(4)
+        self.submit = QPushButton()
 
         layout.addWidget(self.label)
         layout.addWidget(self.text_input)
         layout.addWidget(self.input)
+        layout.addWidget(self.submit)
+
+        self.submit.clicked.connect(self.valor.emit)
 
         self.setLayout(layout)
 
@@ -82,9 +86,9 @@ class Worker(QObject):
         self.janela = janelaCaptcha('image.png')
         self.janela.show()
         valor_janela = ''
-        while len(valor_janela) != 4:
-            valor_janela = self.janela.tentar_combinacao()
-            self.valor.emit(valor_janela)
+        # while len(valor_janela) != 4:
+        #     valor_janela = self.janela.tentar_combinacao()
+        #     self.valor.emit(valor_janela)
 
 
 class EPROC(Browser):
@@ -204,9 +208,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button.clicked.connect(self.show_new_window)
         self.setCentralWidget(self.button)
         # PJE().exec('5147698-10.2023.8.13.0024')
+        # EPROC().exec('10804583320214013800')
+
 
     def show_new_window(self, checked):
-        EPROC().exec('10804583320214013800')
+        if self.w is None:
+            self.w = janelaCaptcha()
+            self.w.show()
+        else:
+            self.w.close()  # Close window.
+            self.w = None  # Discard reference.
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
