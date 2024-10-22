@@ -11,13 +11,6 @@ from selenium.webdriver.support import expected_conditions as ec
 from PIL import Image
 import sys
 
-from PySide6.QtWidgets import (
-    QMainWindow, QApplication, QWidget, QLabel, QVBoxLayout,QPushButton, QLineEdit
-)
-from PySide6.QtGui import QPixmap
-from PySide6.QtCore import QThread, QObject, Signal
-from window_selenium import Ui_MainWindow
-
 # Chrome Options
 # https://peter.sh/experiments/chromium-command-line-switches/
 
@@ -50,46 +43,6 @@ class Browser:
         )
 
         return browser
-
-class janelaCaptcha(QWidget):
-    def __init__(self, nome_img):
-        super().__init__()
-        Image.open(nome_img).crop([300, 430, 430, 480]).save(nome_img)
-        self.label.setPixmap(QPixmap(nome_img))
-
-        layout = QVBoxLayout()
-
-        self.label = QLabel()
-        self.text_input = QLabel('Favor insira a sequência a seguir')
-        self.input = QLineEdit()
-        self.input.setMaxLength(4)
-        self.submit = QPushButton()
-
-        layout.addWidget(self.label)
-        layout.addWidget(self.text_input)
-        layout.addWidget(self.input)
-        layout.addWidget(self.submit)
-
-        self.submit.clicked.connect(self.valor.emit)
-
-        self.setLayout(layout)
-
-    def tentar_combinacao(self):      
-        return self.input.text()
-
-class Worker(QObject):
-    inicio = Signal(str)
-    valor = Signal(str)
-    fim = Signal(str)
-
-    def executar_janela(self):
-        self.janela = janelaCaptcha('image.png')
-        self.janela.show()
-        valor_janela = ''
-        # while len(valor_janela) != 4:
-        #     valor_janela = self.janela.tentar_combinacao()
-        #     self.valor.emit(valor_janela)
-
 
 class EPROC(Browser):
     LINK_BASE = 'https://eproc1g.trf6.jus.br/eproc/externo_controlador.php?acao=processo_consulta_publica'
@@ -134,25 +87,6 @@ class EPROC(Browser):
         self.tentar_consulta()
 
         return None
-
-    def hard_work(self):
-        self._worker = Worker()
-        self._thread = QThread()
-        # Garante que o widget vai ter uma referência para worker e thread
-        worker = self._worker
-        thread = self._thread
-
-        worker.moveToThread(thread)
-        thread.started.connect(worker.executar_janela)
-        worker.finished.connect(thread.quit)
-        worker.finished.connect(thread.deleteLater)
-        thread.finished.connect(worker.deleteLater)
-        worker.valor.connect(self.progress) 
-        #######################################
-        thread.start()  
-
-    def progress(self, valor):
-        self.valor_janela = valor
 
     def __conteudo(self):
         tbody = self.browser.find_element(By.CSS_SELECTOR, self.TABLE_CONTENT)
@@ -200,27 +134,5 @@ class PJE(Browser):
             print(value.text)
         return results
     
-class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, parent = None):
-        super().__init__(parent)
-        self.setupUi(self)
-        self.button = QPushButton("Push for Window")
-        self.button.clicked.connect(self.show_new_window)
-        self.setCentralWidget(self.button)
-        # PJE().exec('5147698-10.2023.8.13.0024')
-        # EPROC().exec('10804583320214013800')
-
-
-    def show_new_window(self, checked):
-        if self.w is None:
-            self.w = janelaCaptcha()
-            self.w.show()
-        else:
-            self.w.close()  # Close window.
-            self.w = None  # Discard reference.
-
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    app.exec()
+    ...
