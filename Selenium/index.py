@@ -149,9 +149,11 @@ class ECAC(Browser):
         self.browser.find_element(By.ID, 'campo-processo').send_keys(num_processo)
 
         self.browser.find_element(By.CSS_SELECTOR, '#consulta-processo > div:nth-child(9) > div > input:nth-child(1)').click()
+
+        self.browser.
         
         sleep(5)
-        self.browser.find_element(By.CSS_SELECTOR, '#captcha-modal > iframe').click()
+        self.browser.find_element(By.ID, 'anchor').click()
         sleep(100)
 
 class TRT(Browser):
@@ -242,6 +244,32 @@ class TRT(Browser):
             action.click()
             action.perform()
 
+class TST(Browser):
+    LINK_BASE = 'https://consultaprocessual.tst.jus.br/consultaProcessual/consultaTstNumUnica.do?consulta=Consultar&conscsjt=&numeroTst={0}&digitoTst={1}&anoTst={2}&orgaoTst={3}&tribunalTst={4}&varaTst={5}&submit=Consultar'
+
+    def __init__(self) -> None:
+        super().__init__(hide=False)
+        self.cortes_string = [7, 9, 13, 14, 16, 20]
+        pass
+
+    def exec(self, num_processo):
+        partes = []
+        posic_passada = 0
+
+        for posic in self.cortes_string:
+            partes.append(num_processo[posic_passada : posic])
+            posic_passada = posic
+
+        self.browser.get(self.LINK_BASE.format(
+            partes[0],partes[1],partes[2],partes[3],partes[4],partes[5])
+        )
+
+        linhas = self.browser.find_elements(By.CLASS_NAME, 'historicoProcesso')
+
+        print(linhas[0].text)
+        #24/06/2024 Conclusos para voto/decisão (Gabinete da Ministra Maria Cristina Irigoyen Peduzzi)
+
 if __name__ == '__main__':
     # ECAC().exec('10680724376201892')
-    TRT().exec('00105604320205030114')
+    # TRT().exec('00105604320205030114')
+    TST().exec('00105604320205030114')
