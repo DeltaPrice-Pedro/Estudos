@@ -159,19 +159,7 @@ class TRT(Browser):
 
     def __init__(self) -> None:
         super().__init__(hide=False)
-        self.topo_esq = [-100,-100]
-        self.topo_centro = [0,-100]
-        self.topo_dir = [100,-100]
-
-        self.meio_esq = [-100,0]
-        self.meio_centro = [0,0]
-        self.meio_dir = [100,0]
-
-        self.baixo_esq = [-100,100]
-        self.baixo_centro = [0,100]
-        self.baixo_dir = [100,100]
-
-        #horizontal, vertical
+         #horizontal, vertical
         self.cord_resp = [
             [-100,-100], [0,-100], [100,-100],
             [-100,0], [0,0], [100,0],
@@ -198,7 +186,7 @@ class TRT(Browser):
         process_str = ''
         ultima_posic = 0
         for posic, value in {7:'-',9:'.',13:'.',14:'.',16:'.',20:''}.items():
-            process_str = process_str + '00105604320205030114'[ultima_posic : posic] + value
+            process_str = process_str + num_processo[ultima_posic : posic] + value
             ultima_posic = posic
 
         self.browser.get(self.LINK_BASE.format(process_str))
