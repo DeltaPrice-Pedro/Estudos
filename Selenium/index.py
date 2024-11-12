@@ -150,7 +150,7 @@ class ECAC(Browser):
 
         self.browser.find_element(By.CSS_SELECTOR, '#consulta-processo > div:nth-child(9) > div > input:nth-child(1)').click()
 
-        self.browser.
+        self.browser.switch_to.frame(self.browser.find_element(By.TAG_NAME, "iframe"))
         
         sleep(5)
         self.browser.find_element(By.ID, 'anchor').click()
@@ -266,10 +266,11 @@ class TST(Browser):
 
         linhas = self.browser.find_elements(By.CLASS_NAME, 'historicoProcesso')
 
-        print(linhas[0].text)
+        for i in linhas:
+            print(i.text)
         #24/06/2024 Conclusos para voto/decisão (Gabinete da Ministra Maria Cristina Irigoyen Peduzzi)
 
 if __name__ == '__main__':
-    # ECAC().exec('10680724376201892')
+    ECAC().exec('10680724376201892')
     # TRT().exec('00105604320205030114')
-    TST().exec('00105604320205030114')
+    # TST().exec('00105604320205030114')
