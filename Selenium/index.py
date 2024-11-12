@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import sys
 
 # Chrome Options
@@ -159,7 +159,6 @@ class TRT(Browser):
 
     def __init__(self) -> None:
         super().__init__(hide=False)
-        #horizontal, vertical
         self.topo_esq = [-100,-100]
         self.topo_centro = [0,-100]
         self.topo_dir = [100,-100]
@@ -171,6 +170,28 @@ class TRT(Browser):
         self.baixo_esq = [-100,100]
         self.baixo_centro = [0,100]
         self.baixo_dir = [100,100]
+
+        #horizontal, vertical
+        self.cord_resp = [
+            [-100,-100], [0,-100], [100,-100],
+            [-100,0], [0,0], [100,0],
+            [-100,100], [0,100], [100,100]
+        ] 
+
+        #Horizontal, Vertical
+        self.cord_img = {
+            '1':(5, 0),
+            '2':(110, 0),
+            '3':(220, 0),
+            '4':(5, 100),
+            '5':(110, 100),
+            '6':(220, 100),
+            '7':(5, 205),
+            '8':(110, 205),
+            '9':(220, 205),
+        }
+
+        self.nome_img = 'oi.png'
         pass
 
     def exec(self, num_processo):
@@ -184,8 +205,46 @@ class TRT(Browser):
 
         self.browser.find_element(By.ID, 'amzn-captcha-verify-button').click()
 
-        sleep(1)
+        sleep(10)
 
+        #Print captcha2
+        self.foto_captcha2()
+        
+        # sleep(1)
+        #Preenche Capacha1
+        # self.preencher_captcha()
+
+        #Tirar print
+        # self.foto_cordenadas()
+
+        #O que procurar
+        # self.elemento_procurado()
+
+        sleep(5)
+
+    def preenche_captcha2(self):
+        self.browser.find_element(By.ID, 'imagemCaptcha').screenshot(self.nome_img)
+
+    def foto_captcha2(self):
+        self.browser.find_element(By.ID, 'imagemCaptcha').screenshot(self.nome_img)
+        
+    def elemento_procurado(self):
+        return self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(1) > em').text
+
+    def foto_captcha(self):
+        self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(2) > canvas').screenshot(self.nome_img)
+
+        font = ImageFont.truetype("C:\\Windows\\Fonts\\Verdanab.ttf", 50)
+
+        img = Image.open(self.nome_img)
+        draw = ImageDraw.Draw(img)
+
+        for number, posic in self.ref_img.items():
+            draw.text(posic, number, 'red', font=font)
+
+        img.show()
+
+    def preenche_captcha(self):
         el = self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(2) > canvas')
 
         action = webdriver.common.action_chains.ActionChains(self.browser)
@@ -194,14 +253,6 @@ class TRT(Browser):
             action.move_to_element_with_offset(el, var1, var2)
             action.click()
             action.perform()
-
-        #Tirar print
-        # self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(2) > canvas').screenshot('oi.png')
-
-        #O que procurar
-        # print(self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(1) > em').text)
-
-        sleep(5)
 
 if __name__ == '__main__':
     # ECAC().exec('10680724376201892')
