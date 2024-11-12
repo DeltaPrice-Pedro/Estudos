@@ -133,6 +133,76 @@ class PJE(Browser):
         for value in results:
             print(value.text)
         return results
-    
+
+class ECAC(Browser):
+    LINK_BASE = 'https://comprot.fazenda.gov.br/comprotegov/site/index.html#ajax/processo-consulta.html'
+
+    def __init__(self) -> None:
+        super().__init__(hide=False)
+        pass
+
+    def exec(self, num_processo):
+        self.browser.get(self.LINK_BASE)
+        self.browser.find_element(By.ID, 'details-button').click()
+        self.browser.find_element(By.ID, 'proceed-link').click()
+
+        self.browser.find_element(By.ID, 'campo-processo').send_keys(num_processo)
+
+        self.browser.find_element(By.CSS_SELECTOR, '#consulta-processo > div:nth-child(9) > div > input:nth-child(1)').click()
+        
+        sleep(5)
+        self.browser.find_element(By.CSS_SELECTOR, '#captcha-modal > iframe').click()
+        sleep(100)
+
+class TRT(Browser):
+    LINK_BASE = 'https://pje-consulta.trt3.jus.br/consultaprocessual/detalhe-processo/{0}'
+
+    def __init__(self) -> None:
+        super().__init__(hide=False)
+        #horizontal, vertical
+        self.topo_esq = [-100,-100]
+        self.topo_centro = [0,-100]
+        self.topo_dir = [100,-100]
+
+        self.meio_esq = [-100,0]
+        self.meio_centro = [0,0]
+        self.meio_dir = [100,0]
+
+        self.baixo_esq = [-100,100]
+        self.baixo_centro = [0,100]
+        self.baixo_dir = [100,100]
+        pass
+
+    def exec(self, num_processo):
+        process_str = ''
+        ultima_posic = 0
+        for posic, value in {7:'-',9:'.',13:'.',14:'.',16:'.',20:''}.items():
+            process_str = process_str + '00105604320205030114'[ultima_posic : posic] + value
+            ultima_posic = posic
+
+        self.browser.get(self.LINK_BASE.format(process_str))
+
+        self.browser.find_element(By.ID, 'amzn-captcha-verify-button').click()
+
+        sleep(1)
+
+        el = self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(2) > canvas')
+
+        action = webdriver.common.action_chains.ActionChains(self.browser)
+
+        for var1, var2 in [[0,100], [100,100]]:
+            action.move_to_element_with_offset(el, var1, var2)
+            action.click()
+            action.perform()
+
+        #Tirar print
+        # self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(2) > canvas').screenshot('oi.png')
+
+        #O que procurar
+        # print(self.browser.find_element(By.CSS_SELECTOR, '#root > div > form > div:nth-child(3) > div > div:nth-child(1) > em').text)
+
+        sleep(5)
+
 if __name__ == '__main__':
-    ...
+    # ECAC().exec('10680724376201892')
+    TRT().exec('00105604320205030114')
