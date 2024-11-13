@@ -187,6 +187,7 @@ class TRT(Browser):
     def exec(self, num_processo):
         process_str = ''
         ultima_posic = 0
+        num_processo = num_processo.replace('.','').replace('-','')
         for posic, value in {7:'-',9:'.',13:'.',14:'.',16:'.',20:''}.items():
             process_str = process_str + num_processo[ultima_posic : posic] + value
             ultima_posic = posic
