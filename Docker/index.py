@@ -2,6 +2,8 @@ import os
 import pymysql
 import dotenv
 
+from time import sleep
+
 dotenv.load_dotenv()
 
 connection = pymysql.connect(
@@ -13,13 +15,18 @@ connection = pymysql.connect(
 
 with connection:
     with connection.cursor() as cursor:
+        # cursor.execute(
+        #     'CREATE TABLE users ('
+        #     'id INT NOT NULL AUTO_INCREMENT, '
+        #     'nome VARCHAR(50) NOT NULL, '
+        #     'idade INT, '
+        #     'PRIMARY KEY(id)'
+        #     ') '
+        # )
+
         cursor.execute(
-            'CREATE TABLE users ('
-            'id INT NOT NULL AUTO_INCREMENT, '
-            'nome VARCHAR(50) NOT NULL, '
-            'idade INT, '
-            'PRIMARY KEY(id)'
-            ') '
+            'SELECT * FROM users'
         )
-        connection.commit()
-        print('deu')
+        print(cursor.fetchone())
+        sleep(20)
+        # connection.commit()
