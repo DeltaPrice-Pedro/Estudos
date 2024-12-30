@@ -14,7 +14,7 @@ class WidgetCustom extends StatelessWidget {
         const Color.fromARGB(255, 74, 158, 254),
       ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
       // alignment: Alignment.topCenter,
-      child: Center(child: StatefulTesteCustom()),
+      child: Center(child: StatefulTeste()),
     );
   }
 }

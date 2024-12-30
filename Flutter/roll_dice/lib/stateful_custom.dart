@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class StatefulTesteCustom extends StatefulWidget {
-  const StatefulTesteCustom({super.key});
+class StatefulTeste extends StatefulWidget {
+  const StatefulTeste({super.key});
 
   @override
-  State<StatefulTesteCustom> createState() {
-    return _StatefulTesteCustom();
+  State<StatefulTeste> createState() {
+    return _StatefulTeste();
   }
 }
 
-class _StatefulTesteCustom extends State<StatefulTesteCustom> {
+class _StatefulTeste extends State<StatefulTeste> {
   String textChange = 'Sesas Num.: Null';
   var random = Random();
 
@@ -24,20 +24,24 @@ class _StatefulTesteCustom extends State<StatefulTesteCustom> {
   @override
   Widget build(context) {
     return Column(children: [
-      Image.asset(
-        'assets/images/deltaprice_hori.png',
-        width: 400,
+      Opacity(
+        opacity: 0.2,
+        child: Image.asset(
+          'assets/images/deltaprice_hori.png',
+          width: 400,
+        ),
       ),
       Text(
         textChange,
         style: TextStyle(fontSize: 40),
       ),
-      TextButton(
+      TextButton.icon(
           onPressed: method,
           style: TextButton.styleFrom(
               padding: const EdgeInsets.only(top: 20),
               minimumSize: Size(40, 40)),
-          child: const Text('Enviar')),
+          icon: const Icon(Icons.import_contacts_sharp),
+          label: const Text('Enviar')),
     ]);
   }
 }
