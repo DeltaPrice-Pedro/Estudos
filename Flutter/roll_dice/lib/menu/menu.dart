@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -11,19 +10,11 @@ class Menu extends StatefulWidget {
 }
 
 class _Menu extends State<Menu> {
-  String textChange = 'Sesas Num.: Null';
-  var random = Random();
+Widget activatePage = Products()
 
-  void method() {
-    int randomNum = random.nextInt(11);
+  void switchPage(Widget page) {
     setState(() {
-      textChange = 'Sesas Num.: $randomNum';
-    });
-  }
-
-  void switchPage() {
-    setState(() {
-      
+      activatePage = page
     });
   }
 
@@ -31,16 +22,31 @@ class _Menu extends State<Menu> {
   Widget build(context) {
     return Column(children: [
       Text(
-        textChange,
+        'Menu',
         style: TextStyle(fontSize: 40),
       ),
-      TextButton.icon(
-          onPressed: method,
+      activatePage,
+      Row(children:[TextButton.icon(
+          onPressed: switchPage(Products),
           style: TextButton.styleFrom(
-              padding: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.all(20),
               minimumSize: Size(40, 40)),
           icon: const Icon(Icons.import_contacts_sharp),
-          label: const Text('Enviar')),
+          label: const Text('Produtos')),TextButton.icon(
+          onPressed: switchPage(History),
+          style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(20),
+              minimumSize: Size(40, 40)),
+          icon: const Icon(Icons.import_contacts_sharp),
+          label: const Text('Histórico')),
+          TextButton.icon(
+          onPressed: switchPage(Profile),
+          style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(20),
+              minimumSize: Size(40, 40)),
+          icon: const Icon(Icons.import_contacts_sharp),
+          label: const Text('Perfil')),])
+      
     ]);
   }
 }

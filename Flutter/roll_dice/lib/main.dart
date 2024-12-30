@@ -19,7 +19,9 @@ class _InitPage extends State<InitPage> {
   Widget activePage = Login();
 
   switchPage(){
-    activePage = Menu();
+    setState(() {
+      activePage = Menu();
+    });
   }
 
   @override
