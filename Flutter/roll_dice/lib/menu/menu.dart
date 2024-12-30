@@ -34,11 +34,6 @@ Widget activatePage = Products()
           icon: const Icon(Icons.import_contacts_sharp),
           label: const Text('Produtos')),TextButton.icon(
           onPressed: switchPage(History),
-          style: TextButton.styleFrom(
-              padding: const EdgeInsets.all(20),
-              minimumSize: Size(40, 40)),
-          icon: const Icon(Icons.import_contacts_sharp),
-          label: const Text('Histórico')),
           TextButton.icon(
           onPressed: switchPage(Profile),
           style: TextButton.styleFrom(

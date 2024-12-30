@@ -5,6 +5,6 @@ class Profile extends StatelessWidget{
 
     @override
     Widget build(context){
-        return Column(children: [Text('Perfil')])
+        return Column(children: [Text('Perfil com histórico embaixo')])
     }
 }
