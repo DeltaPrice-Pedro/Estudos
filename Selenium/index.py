@@ -320,31 +320,18 @@ class Acessorias:
 
         self.browser.find_element(By.CSS_SELECTOR, self.BTN_ENTRAR).click()
 
-    def pesquisar(self, num_empresa: str):
-        self.browser.get(self.URL_DETALHES.format(num_empresa))
-        sleep(2)
-
+    def pesquisar(self, relacao_dominio: dict[str,str]):
         dict_contato = {}
-        count = 1
-        while self.contato_exists(count) == True:
-            nome = self.browser.find_element(By.ID, self.campo_nome.format(count))\
-                .get_attribute('value')
-            email = self.browser.find_element(By.ID, self.campo_email.format(count))\
-                .get_attribute('value')
 
-            if email != '':
-                dict_contato[nome] = email
-            count = count + 1
+        for num, nome in relacao_dominio.items():
+            self.browser.get(self.URL_DETALHES.format(num))
+            sleep(2)
+
+            item_input = self.browser.find_element(By.ID, 'EmpNome').get_attribute('value')
+            dict_contato[nome] = True if item_input == nome else False
 
         print(dict_contato)
         return dict_contato
-
-    def contato_exists(self, id):
-        try:
-            self.browser.find_element(By.ID, self.rowContato.format(id))
-            return True
-        except NoSuchElementException:
-            return False
 
     def close(self):
         self.browser.close()
@@ -353,6 +340,8 @@ if __name__ == '__main__':
     ac = Acessorias()
     ac.login('wellingtondeltaprice@gmail.com','acessorias@#$06012019')
     sleep(10)
+
+    tb.read
     ac.pesquisar('63')
     # ECAC().exec('10680724376201892')
     # TRT().exec('00105604320205030114')

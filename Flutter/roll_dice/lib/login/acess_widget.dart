@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class StatefulTeste extends StatefulWidget {
-  const StatefulTeste({super.key});
+class AcessWidget extends StatefulWidget {
+  const AcessWidget({super.key});
 
   @override
-  State<StatefulTeste> createState() {
-    return _StatefulTeste();
+  State<AcessWidget> createState() {
+    return _AcessWidget();
   }
 }
 
-class _StatefulTeste extends State<StatefulTeste> {
+class _AcessWidget extends State<AcessWidget> {
   String textChange = 'Sesas Num.: Null';
   var random = Random();
 
@@ -24,13 +24,6 @@ class _StatefulTeste extends State<StatefulTeste> {
   @override
   Widget build(context) {
     return Column(children: [
-      Opacity(
-        opacity: 0.2,
-        child: Image.asset(
-          'assets/images/deltaprice_hori.png',
-          width: 400,
-        ),
-      ),
       Text(
         textChange,
         style: TextStyle(fontSize: 40),
