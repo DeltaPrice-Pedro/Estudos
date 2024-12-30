@@ -41,13 +41,6 @@ class _Menu extends State<Menu> {
               minimumSize: Size(40, 40)),
           icon: const Icon(Icons.import_contacts_sharp),
           label: const Text('Enviar')),
-      TextButton.icon(
-          onPressed: method,
-          style: TextButton.styleFrom(
-              padding: const EdgeInsets.only(top: 20),
-              minimumSize: Size(40, 40)),
-          icon: const Icon(Icons.import_contacts_sharp),
-          label: const Text('Enviar'))
     ]);
   }
 }
