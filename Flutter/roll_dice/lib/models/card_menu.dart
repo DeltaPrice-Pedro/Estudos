@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Card extends StatelessWidget{
+class Card extends StatelessWidget {
   const Card(this.titulo, this.preco, this.medida, this.imagem, {super.key});
 
   final String titulo;
@@ -10,7 +10,14 @@ class Card extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return SizedBox(
+      width: 100,
+      child: Column(
+        children: [
+          Text(titulo),
+          ElevatedButton(onPressed: () {}, child: const Text('Comprar'))
+        ],
+      ),
+    );
   }
 }
