@@ -12,6 +12,8 @@ class Menu extends StatefulWidget {
 }
 
 class _Menu extends State<Menu> {
+  Widget produtos = Products();
+  Widget perfil = Profile();
   Widget activatePage = Products();
 
   switchPage(Widget page) {
@@ -37,13 +39,13 @@ class _Menu extends State<Menu> {
       activatePage,
       Row(children: [
         TextButton.icon(
-            onPressed: switchPage(Products()),
+            onPressed: switchPage(produtos),
             style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(20), minimumSize: Size(40, 40)),
             icon: const Icon(Icons.import_contacts_sharp),
             label: const Text('Produtos')),
         TextButton.icon(
-            onPressed: switchPage(Profile()),
+            onPressed: switchPage(perfil),
             style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(20), minimumSize: Size(40, 40)),
             icon: const Icon(Icons.import_contacts_sharp),

@@ -13,6 +13,7 @@ class Card extends StatelessWidget {
     return SizedBox(
       width: 100,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(titulo),
           ElevatedButton(onPressed: () {}, child: const Text('Comprar'))
