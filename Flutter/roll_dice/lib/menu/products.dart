@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class Menu extends StatefulWidget {
-  const Menu({super.key});
+class Products extends StatefulWidget {
+  const Products({super.key});
 
   @override
-  State<Menu> createState() {
-    return _Menu();
+  State<Products> createState() {
+    return _Products();
   }
 }
 
-class _Menu extends State<Menu> {
+class _Products extends State<Products> {
   String textChange = 'Sesas Num.: Null';
   var random = Random();
 
