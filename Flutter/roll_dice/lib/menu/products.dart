@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roll_dice/data/products_cards.dart';
 import 'dart:math';
 
 class Products extends StatefulWidget {
@@ -21,12 +22,6 @@ class _Products extends State<Products> {
     });
   }
 
-  void switchPage() {
-    setState(() {
-      
-    });
-  }
-
   @override
   Widget build(context) {
     return Column(children: [
@@ -34,6 +29,7 @@ class _Products extends State<Products> {
         textChange,
         style: TextStyle(fontSize: 40),
       ),
+      // card for card in productsCard
       TextButton.icon(
           onPressed: method,
           style: TextButton.styleFrom(
