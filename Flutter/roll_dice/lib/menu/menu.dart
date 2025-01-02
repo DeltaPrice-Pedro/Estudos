@@ -23,6 +23,13 @@ class _Menu extends State<Menu> {
   @override
   Widget build(context) {
     return Column(children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Image.asset(
+          'assets/images/deltaprice_hori.png',
+          width: 400,
+        ),
+      ),
       Text(
         'Menu',
         style: TextStyle(fontSize: 40),

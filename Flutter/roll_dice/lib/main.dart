@@ -16,11 +16,17 @@ class InitPage extends StatefulWidget {
 }
 
 class _InitPage extends State<InitPage> {
-  Widget activePage = Login();
+  Widget? activePage;
 
-  switchPage(){
+  @override
+  void initState() {
+    activePage = Login(switchPage);
+    super.initState();
+  }
+
+  void switchPage() {
     setState(() {
-      activePage = Menu();
+      activePage = const Menu();
     });
   }
 
@@ -29,26 +35,17 @@ class _InitPage extends State<InitPage> {
     return MaterialApp(
         title: 'Sesas',
         home: Scaffold(
-            body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            const Color.fromARGB(255, 26, 131, 250),
-            const Color.fromARGB(255, 74, 158, 254),
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-          // alignment: Alignment.topCenter,
-          child: Center(
-            child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Image.asset(
-                  'assets/images/deltaprice_hori.png',
-                  width: 400,
-                ),
-              ),
-              activePage,
-              TextButton(onPressed: switchPage, child: Text("Trocar tela"))
-            ]),
+          body: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+              const Color.fromARGB(255, 26, 131, 250),
+              const Color.fromARGB(255, 74, 158, 254),
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+            // alignment: Alignment.topCenter,
+            child: Center(
+              child: activePage,
+            ),
           ),
-        )));
+        ));
   }
 }
