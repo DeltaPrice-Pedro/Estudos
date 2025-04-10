@@ -1,16 +1,17 @@
-import json
-import requests
+from json import loads
+from requests import get
 from zipfile import ZipFile 
-import shutil
-import os
+from shutil import rmtree, move
+from os import remove
 from pathlib import Path
 
 class DriverMaintenance:
     URL = 'https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json'
     query_parameters = {"downloadformat": "zip"}
-    zip_path = Path(__file__).parent / "chomedriver.zip"
-    exe_dir_path = Path(__file__).parent / 'chromedriver-win64' / 'chromedriver.exe'
-    exe_path = Path(__file__).parent / 'chromedriver.exe'
+    zip_path = Path(__file__).parent / 'src' / 'drivers' / "chomedriver.zip"
+    zip_extract_path = Path(__file__).parent / 'src' / 'drivers'
+    exe_dir_path = Path(__file__).parent / 'src' / 'drivers' / 'chromedriver-win64' / 'chromedriver.exe'
+    exe_path = Path(__file__).parent / 'src' / 'drivers' / 'chromedriver.exe'
 
     def __init__(self):
         pass
@@ -33,22 +34,22 @@ class DriverMaintenance:
             file.write(response.content)
 
     def _download_json(self):
-        response = requests.get(self.URL)
-        return json.loads(response.text)
+        response = get(self.URL)
+        return loads(response.text)
 
     def _driver_response(self, object_json):
         latest_driver_url = object_json['channels']['Stable']\
                                 ['downloads']['chromedriver'][4]['url']
-        return requests.get(latest_driver_url, self.query_parameters)
+        return get(latest_driver_url, self.query_parameters)
 
     def _extract_move(self):
         with ZipFile(self.zip_path, 'r') as zObject: 
-            zObject.extractall(path= Path(__file__).parent) 
+            zObject.extractall(path= self.zip_extract_path) 
 
-        shutil.move(self.exe_dir_path, self.exe_path)
+        move(self.exe_dir_path, self.exe_path)
 
-        shutil.rmtree(self.exe_dir_path.parent)
-        os.remove(self.zip_path)
+        rmtree(self.exe_dir_path.parent)
+        remove(self.zip_path)
 
 if __name__ == '__main__':
     dm = DriverMaintenance()
